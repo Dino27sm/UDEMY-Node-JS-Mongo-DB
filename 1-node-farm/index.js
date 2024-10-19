@@ -1,4 +1,4 @@
 const fs = require("fs");
 
-const welcomeText = "Welcome to NodeJS !";
-console.log(welcomeText);
+const textIn = fs.readFileSync("./txt/input.txt", "utf-8");
+console.log(textIn);
