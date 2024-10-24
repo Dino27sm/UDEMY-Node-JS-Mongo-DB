@@ -45,7 +45,7 @@ const server = http.createServer((req, res) => {
       "Content-type": "text/html",
       "My-own-header": "Hello World!",
     });
-    res.end("Page not found !");
+    res.end("<h1>Page not found !</h1>");
   }
 });
 
