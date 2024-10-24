@@ -1,5 +1,6 @@
 const fs = require("fs");
 const http = require("http");
+const url = require("url");
 
 ////// ============= FILES Read / Write ============================
 // // Blocking, synchronous way
@@ -31,7 +32,21 @@ const http = require("http");
 ////
 ////// ============= SERVER ============================
 const server = http.createServer((req, res) => {
-  res.end("Hello from the Server port 8070 !");
+  const pathName = req.url;
+
+  if (pathName === "/") {
+    res.end("Hello from the Server port 8070 ! No URL !");
+  } else if (pathName === "/overview") {
+    res.end("It is: OVERVIEW");
+  } else if (pathName === "/product") {
+    res.end("It is: PRODUCT");
+  } else {
+    res.writeHead(404, {
+      "Content-type": "text/html",
+      "My-own-header": "Hello World!",
+    });
+    res.end("Page not found !");
+  }
 });
 
 server.listen("8070", "127.0.0.1", () => {
