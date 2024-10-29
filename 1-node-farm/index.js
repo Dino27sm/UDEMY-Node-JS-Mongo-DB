@@ -31,7 +31,7 @@ const url = require("url");
 // console.log("----------- Start reading files ! --------------");
 ////
 ////// ============= SERVER ============================
-// This part of the code executes ones at the begining,
+// This part of the code executes only ones at the begining,
 // so we can use Synchronous mode here
 const replaceTemplate = (temp, product) => {
   let output = temp.replace(/{%PRODUCTNAME%}/g, product.productName);
@@ -67,10 +67,12 @@ const dataObj = JSON.parse(data);
 ////----------------------------------------------------
 //
 const server = http.createServer((req, res) => {
+  const { query, pathname } = url.parse(req.url, true);
+
   const pathName = req.url;
 
   //------ OVERVIEW Page
-  if (pathName === "/" || pathName === "/overview") {
+  if (pathname === "/" || pathname === "/overview") {
     res.writeHead(200, { "Content-type": "text/html" });
 
     const cardsHTML = dataObj
@@ -80,11 +82,14 @@ const server = http.createServer((req, res) => {
     res.end(output);
 
     //------ PRODUCT Page
-  } else if (pathName === "/product") {
-    res.end("It is: PRODUCT");
+  } else if (pathname === "/product") {
+    res.writeHead(200, { "Content-type": "text/html" });
+    const product = dataObj[query.id];
+    const output = replaceTemplate(tempProduct, product);
+    res.end(output);
 
     //------ API Page
-  } else if (pathName === "/api") {
+  } else if (pathname === "/api") {
     res.writeHead(200, { "Content-type": "application/json" });
     res.end(data);
 
