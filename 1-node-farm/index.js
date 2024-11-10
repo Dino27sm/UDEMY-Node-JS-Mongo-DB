@@ -57,7 +57,7 @@ const dataObj = JSON.parse(data);
 const server = http.createServer((req, res) => {
   const { query, pathname } = url.parse(req.url, true);
 
-  const pathName = req.url;
+  // const pathName = req.url;
 
   //------ OVERVIEW Page
   if (pathname === "/" || pathname === "/overview") {
@@ -72,7 +72,8 @@ const server = http.createServer((req, res) => {
     //------ PRODUCT Page
   } else if (pathname === "/product") {
     res.writeHead(200, { "Content-type": "text/html" });
-    const product = dataObj[query.id];
+    let product = dataObj[query.id];
+    if (!product) product = dataObj[0]; // If "product" is undefined
     const output = replaceTemplate(tempProduct, product);
     res.end(output);
 
