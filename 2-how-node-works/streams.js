@@ -8,21 +8,25 @@ server.on('request', (req, res) => {
   //   res.end(data);
   // });
 
-  // Solution 2 - Streams (reding data file piece by piece)
+  // // Solution 2 - Streams (reding data file piece by piece)
+  // const readable = fs.createReadStream('test-file.txt');
+  // readable.on('data', (chunk) => {
+  //   res.write(chunk);
+  // });
+
+  // readable.on('end', () => {
+  //   res.end();
+  // });
+
+  // readable.on('error', (err) => {
+  //   console.log(err);
+  //   err.statusCode = 500;
+  //   res.end('File not found!');
+  // });
+
+  // Solution 3 - Pipes (better than Solution 2 and only one to Use !)
   const readable = fs.createReadStream('test-file.txt');
-  readable.on('data', (chunk) => {
-    res.write(chunk);
-  });
-
-  readable.on('end', () => {
-    res.end();
-  });
-
-  readable.on('error', (err) => {
-    console.log(err);
-    err.statusCode = 500;
-    res.end('File not found!');
-  });
+  readable.pipe(res); // The pattern is: "readableSource.pipe(writableDestination);""
 });
 //
 //---------------- START Server ------------------
