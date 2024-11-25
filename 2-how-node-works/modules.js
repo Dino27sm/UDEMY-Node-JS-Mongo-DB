@@ -8,7 +8,8 @@ const calc1 = new C();
 console.log(calc1.add(2, 5));
 
 // Using just "exports"
-const calc2 = require('./test-module-2.js');
+// const calc2 = require('./test-module-2.js');
+const { add, multiply, devide } = require('./test-module-2.js');
 
-console.log(calc2.add(6, 7));
-console.log(calc2.multiply(4, 5));
+console.log(add(6, 7));
+console.log(multiply(4, 5));
