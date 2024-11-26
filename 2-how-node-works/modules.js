@@ -13,3 +13,4 @@ const { add, multiply, devide } = require('./test-module-2.js');
 
 console.log(add(6, 7));
 console.log(multiply(4, 5));
+console.log(devide(16, 2));
