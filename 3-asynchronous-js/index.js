@@ -16,7 +16,7 @@ const writeFilePromise = (file, data) => {
   return new Promise((resolve, reject) => {
     fs.writeFile(file, data, (err) => {
       if (err) reject(`I could not write the file! 😒`);
-      resolve();
+      resolve('Success!');
     });
   });
 };
@@ -36,5 +36,5 @@ readFilePromise(`${__dirname}/dog.txt`)
     console.log(`Dog img saved into a file! 👌`);
   })
   .catch((err) => {
-    console.log(err.message);
+    console.log(err);
   });
