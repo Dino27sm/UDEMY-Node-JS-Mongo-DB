@@ -3,16 +3,26 @@ const fs = require('fs');
 // To use "superagent" function from "npm" packages
 const superagent = require('superagent');
 
-const readFilePro = (file) => {
+const readFilePromise = (file) => {
   return new Promise((resolve, reject) => {
     fs.readFile(file, 'utf8', (err, data) => {
-      if (err) reject('I could not find that file! 😒');
+      if (err) reject('I could not find that file to read! 😒');
       resolve(data);
     });
   });
 };
 
-readFilePro(`${__dirname}/dog.txt`).then((data) => {
+const writeFilePromise = (file, data) => {
+  return new Promise((resolve, reject) => {
+    fs.writeFile(file, data, (err) => {
+      if (err) reject(`I could not write the file! 😒`);
+      resolve();
+      console.log(`Dog img saved into a file!`);
+    });
+  });
+};
+
+readFilePromise(`${__dirname}/dog.txt`).then((data) => {
   console.log(`Breed: ${data}`);
 
   superagent
@@ -20,10 +30,7 @@ readFilePro(`${__dirname}/dog.txt`).then((data) => {
     .then((res) => {
       const dogPictures = res.body.message.join(',\n');
 
-      fs.writeFile('dog-img.txt', dogPictures, (err) => {
-        if (err) return console.log(err.message);
-        console.log(`Dog img saved into a file!`);
-      });
+      writeFilePromise('dog-img.txt', dogPictures);
     })
     .catch((err) => {
       console.log(err.message);
