@@ -11,6 +11,7 @@ fs.readFile('dog.txt', 'utf8', (err, data) => {
     if (err) return console.log(err.message);
 
     fs.writeFile('dog-img.txt', res.body.message[0], (err) => {
+      if (err) return console.log(err.message);
       console.log(`Dog img saved into a file!`);
     });
   });
