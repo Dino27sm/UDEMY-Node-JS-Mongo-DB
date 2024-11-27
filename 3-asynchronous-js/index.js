@@ -17,22 +17,24 @@ const writeFilePromise = (file, data) => {
     fs.writeFile(file, data, (err) => {
       if (err) reject(`I could not write the file! 😒`);
       resolve();
-      console.log(`Dog img saved into a file!`);
     });
   });
 };
 
-readFilePromise(`${__dirname}/dog.txt`).then((data) => {
-  console.log(`Breed: ${data}`);
-
-  superagent
-    .get(`https://dog.ceo/api/breed/${data}/images`)
-    .then((res) => {
-      const dogPictures = res.body.message.join(',\n');
-
-      writeFilePromise('dog-img.txt', dogPictures);
-    })
-    .catch((err) => {
-      console.log(err.message);
-    });
-});
+// ======== Using chained Promises to avoid "Callback Hell" ============
+//
+readFilePromise(`${__dirname}/dog.txt`)
+  .then((data) => {
+    console.log(`Breed: ${data}`);
+    return superagent.get(`https://dog.ceo/api/breed/${data}/images`);
+  })
+  .then((res) => {
+    const dogPictures = res.body.message.join(',\n');
+    return writeFilePromise('dog-img.txt', dogPictures);
+  })
+  .then(() => {
+    console.log(`Dog img saved into a file! 👌`);
+  })
+  .catch((err) => {
+    console.log(err.message);
+  });
