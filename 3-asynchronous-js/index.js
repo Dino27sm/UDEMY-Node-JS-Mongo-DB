@@ -43,14 +43,20 @@ const writeFilePromise = (file, data) => {
 //=========== Using Async/Await way to consume Promises ====================
 //
 const getDogPic = async () => {
-  const data = await readFilePromise(`${__dirname}/dog.txt`);
-  console.log(`Breed: ${data}`);
+  try {
+    const data = await readFilePromise(`${__dirname}/dog.txt`);
+    console.log(`Breed: ${data}`);
 
-  const res = await superagent.get(`https://dog.ceo/api/breed/${data}/images`);
-  const dogPictures = res.body.message.join(',\n');
+    const res = await superagent.get(
+      `https://dog.ceo/api/breed/${data}/images`
+    );
+    const dogPictures = res.body.message.join(',\n');
 
-  await writeFilePromise('dog-img.txt', dogPictures);
-  console.log(`Dog img saved into a file! 👌`);
+    await writeFilePromise('dog-img.txt', dogPictures);
+    console.log(`Dog img saved into a file! 👌`);
+  } catch (error) {
+    console.log(error);
+  }
 };
 
 getDogPic();
