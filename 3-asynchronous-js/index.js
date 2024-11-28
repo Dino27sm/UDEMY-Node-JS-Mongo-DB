@@ -21,20 +21,36 @@ const writeFilePromise = (file, data) => {
   });
 };
 
-// ======== Using chained Promises to avoid "Callback Hell" ============
+// // ======== Using chained Promises to avoid "Callback Hell" ============
+// //
+// readFilePromise(`${__dirname}/dog.txt`)
+//   .then((data) => {
+//     console.log(`Breed: ${data}`);
+//     return superagent.get(`https://dog.ceo/api/breed/${data}/images`);
+//   })
+//   .then((res) => {
+//     const dogPictures = res.body.message.join(',\n');
+//     return writeFilePromise('dog-img.txt', dogPictures);
+//   })
+//   .then(() => {
+//     console.log(`Dog img saved into a file! 👌`);
+//   })
+//   .catch((err) => {
+//     console.log(err);
+//   });
+// //=======================================================================
 //
-readFilePromise(`${__dirname}/dog.txt`)
-  .then((data) => {
-    console.log(`Breed: ${data}`);
-    return superagent.get(`https://dog.ceo/api/breed/${data}/images`);
-  })
-  .then((res) => {
-    const dogPictures = res.body.message.join(',\n');
-    return writeFilePromise('dog-img.txt', dogPictures);
-  })
-  .then(() => {
-    console.log(`Dog img saved into a file! 👌`);
-  })
-  .catch((err) => {
-    console.log(err);
-  });
+//=========== Using Async/Await way to consume Promises ====================
+//
+const getDogPic = async () => {
+  const data = await readFilePromise(`${__dirname}/dog.txt`);
+  console.log(`Breed: ${data}`);
+
+  const res = await superagent.get(`https://dog.ceo/api/breed/${data}/images`);
+  const dogPictures = res.body.message.join(',\n');
+
+  await writeFilePromise('dog-img.txt', dogPictures);
+  console.log(`Dog img saved into a file! 👌`);
+};
+
+getDogPic();
