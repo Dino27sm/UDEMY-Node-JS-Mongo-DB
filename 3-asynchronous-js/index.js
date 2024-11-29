@@ -48,9 +48,11 @@ const getDogPic = async () => {
     console.log(`Breed: ${data}`);
 
     const res = await superagent.get(
-      `https://dog.ceo/api/breed/${data}/images`
+      // `https://dog.ceo/api/breed/${data}/images`
+      `https://dog.ceo/api/breed/${data}/images/random`
     );
-    const dogPictures = res.body.message.join(',\n');
+    // const dogPictures = res.body.message.join(',\n');
+    const dogPictures = res.body.message;
 
     await writeFilePromise('dog-img.txt', dogPictures);
     console.log(`Dog img saved into a file! 👌`);
