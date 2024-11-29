@@ -44,7 +44,7 @@ const writeFilePromise = (file, data) => {
 //
 const getDogPic = async () => {
   try {
-    const data = await readFilePromise(`${__dirname}/dog_xxx.txt`);
+    const data = await readFilePromise(`${__dirname}/dog.txt`);
     console.log(`Breed: ${data}`);
 
     const res = await superagent.get(
@@ -63,14 +63,27 @@ const getDogPic = async () => {
 
 // getDogPic();
 //
-//================= Getting Values from Async/Await functions ===============
+// //================ Getting Values from Async/Await functions ===============
+// //
+// console.log('1. Start getting Dog pictures!');
+// getDogPic()
+//   .then((x) => {
+//     console.log(x);
+//     console.log('3. Done getting Dog pics!');
+//   })
+//   .catch((err) => {
+//     console.log('ERROR ! 💥💥💥');
+//   });
+// //
+//================ Another way - without using ".then()" ====================
 //
-console.log('1. Start getting Dog pictures!');
-getDogPic()
-  .then((x) => {
-    console.log(x);
+(async () => {
+  try {
+    console.log('1. Start getting Dog pictures!');
+    const getDogPicData = await getDogPic();
+    console.log(getDogPicData);
     console.log('3. Done getting Dog pics!');
-  })
-  .catch((err) => {
+  } catch (error) {
     console.log('ERROR ! 💥💥💥');
-  });
+  }
+})();
