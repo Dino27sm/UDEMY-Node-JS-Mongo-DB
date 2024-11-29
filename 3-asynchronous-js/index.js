@@ -57,6 +57,15 @@ const getDogPic = async () => {
   } catch (error) {
     console.log(error);
   }
+  return '2. Returned message from getDogPic! 🐶';
 };
 
-getDogPic();
+// getDogPic();
+//
+//================= Getting Values from Async/Await functions ===============
+//
+console.log('1. Start getting Dog pictures!');
+getDogPic().then((x) => {
+  console.log(x);
+  console.log('3. Done getting Dog pics!');
+});
