@@ -5,5 +5,8 @@
 # User-specific files
 test-file.txt
 *.jpg
+*.png
+*.pug
+*.svg
 # Specific directories
 */node_modules/
