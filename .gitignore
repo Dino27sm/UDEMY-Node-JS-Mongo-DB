@@ -4,6 +4,6 @@
 
 # User-specific files
 test-file.txt
-
+*.jpg
 # Specific directories
 */node_modules/
