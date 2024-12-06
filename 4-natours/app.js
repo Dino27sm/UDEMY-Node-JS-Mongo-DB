@@ -71,6 +71,23 @@ app.post('/api/v1/tours', (req, res) => {
   );
 });
 
+// Use "patch" request to update a specific "tour" in "tours" array
+app.patch('/api/v1/tours/:id', (req, res) => {
+  if (Number(req.params.id) > tours.length) {
+    return res.status(404).json({
+      status: 'fail',
+      message: 'Invalid ID',
+    });
+  }
+
+  res.status(200).json({
+    status: 'success',
+    data: {
+      tour: '<Updated tour is here ...!>',
+    },
+  });
+});
+
 const port = 3000;
 app.listen(port, () => {
   console.log(`App running on port ${port} ...`);
