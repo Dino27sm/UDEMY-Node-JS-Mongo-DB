@@ -4,11 +4,11 @@
 
 # User-specific files
 test-file.txt
+*.json
 *.jpg
 *.png
 *.pug
 *.svg
-*/dev-data/data/tours-simple.json
 
 # Specific directories
 */node_modules/
