@@ -20,6 +20,22 @@ app.get('/api/v1/tours', (req, res) => {
   });
 });
 
+// Using "req.params" - use ":" to define params
+// To make params optional use "?" after it (.../:id?)
+app.get('/api/v1/tours/:id', (req, res) => {
+  console.log(req.params);
+
+  const id = Number(req.params.id);
+  const tour = tours.filter((elm) => elm.id === id);
+
+  res.status(200).json({
+    status: 'success',
+    data: {
+      tour: tour,
+    },
+  });
+});
+
 app.post('/api/v1/tours', (req, res) => {
   // console.log(req.body);
 
