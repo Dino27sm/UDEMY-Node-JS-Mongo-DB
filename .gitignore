@@ -8,6 +8,7 @@ test-file.txt
 *.png
 *.pug
 *.svg
-*.json
+*/dev-data/data/tours-simple.json
+
 # Specific directories
 */node_modules/
