@@ -41,13 +41,7 @@ const getTour = (req, res) => {
   });
 };
 
-//-------------------------------------------------------
-app.get('/api/v1/tours', getAllTours);
-app.get('/api/v1/tours/:id', getTour);
-
-app.post('/api/v1/tours', (req, res) => {
-  // console.log(req.body);
-
+const createTour = (req, res) => {
   const newId = tours[tours.length - 1].id + 1;
   const newTour = Object.assign({ id: newId }, req.body);
 
@@ -64,10 +58,9 @@ app.post('/api/v1/tours', (req, res) => {
       });
     }
   );
-});
+};
 
-// Use "patch" request to update a specific "tour" in "tours" array
-app.patch('/api/v1/tours/:id', (req, res) => {
+const updateTour = (req, res) => {
   if (Number(req.params.id) > tours.length) {
     return res.status(404).json({
       status: 'fail',
@@ -81,10 +74,9 @@ app.patch('/api/v1/tours/:id', (req, res) => {
       tour: '<Updated tour is here ...!>',
     },
   });
-});
+};
 
-// Use "delete" request to DELETE a specific "tour" in "tours" array
-app.delete('/api/v1/tours/:id', (req, res) => {
+const deleteTour = (req, res) => {
   if (Number(req.params.id) > tours.length) {
     return res.status(404).json({
       status: 'fail',
@@ -96,8 +88,17 @@ app.delete('/api/v1/tours/:id', (req, res) => {
     status: 'success',
     data: null,
   });
-});
+};
 
+//-------------------------------------------------------
+app.get('/api/v1/tours', getAllTours);
+app.get('/api/v1/tours/:id', getTour);
+app.post('/api/v1/tours', createTour);
+app.patch('/api/v1/tours/:id', updateTour);
+app.delete('/api/v1/tours/:id', deleteTour);
+
+//-------------------------------------------------------
+//
 const port = 3000;
 app.listen(port, () => {
   console.log(`App running on port ${port} ...`);
