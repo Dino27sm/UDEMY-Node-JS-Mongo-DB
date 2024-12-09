@@ -10,7 +10,7 @@ const tours = JSON.parse(
 );
 
 // Here are the URL Routers
-app.get('/api/v1/tours', (req, res) => {
+const getAllTours = (req, res) => {
   res.status(200).json({
     status: 'success',
     results: tours.length,
@@ -18,23 +18,14 @@ app.get('/api/v1/tours', (req, res) => {
       tours: tours,
     },
   });
-});
+};
 
-// Using "req.params" - use ":" to define params
-// To make params optional use "?" after it (.../:id?)
-app.get('/api/v1/tours/:id', (req, res) => {
+const getTour = (req, res) => {
   console.log(req.params);
 
   const id = Number(req.params.id);
-  // if (id > tours.length) {
-  //   return res.status(404).json({
-  //     status: 'fail',
-  //     message: 'Invalid ID',
-  //   });
-  // }
   const tour = tours.find((elm) => elm.id === id);
 
-  // Another way to check correctness of the "ID"
   if (!tour) {
     return res.status(404).json({
       status: 'fail',
@@ -48,7 +39,11 @@ app.get('/api/v1/tours/:id', (req, res) => {
       tour: tour,
     },
   });
-});
+};
+
+//-------------------------------------------------------
+app.get('/api/v1/tours', getAllTours);
+app.get('/api/v1/tours/:id', getTour);
 
 app.post('/api/v1/tours', (req, res) => {
   // console.log(req.body);
