@@ -1,25 +1,35 @@
 const fs = require('fs');
 const express = require('express');
+const morgan = require('morgan');
+
 const app = express();
 
-// MIDDLEWARE Definition - stays between Request and Response
+// 1. MIDDLEWARE Definition (stays between Request and Response)
+app.use(morgan('dev'));
 app.use(express.json());
 
-// // Create Own Middleware here -------------------------------
-// app.use((req, res, next) => {
-//   console.log('Hello from my Middleware! 👋');
-//   next(); // NEVER Forget to put this "next()" at the end !!!
-// });
-// //-----------------------------------------------------------
+// Create Own Middleware here -------------------------------
+app.use((req, res, next) => {
+  console.log('Hello from my Middleware! 👋');
+  next(); // NEVER Forget to put this "next()" at the end !!!
+});
+
+app.use((req, res, next) => {
+  req.requestTime = new Date().toUTCString();
+  next();
+});
+//-----------------------------------------------------------
 
 const tours = JSON.parse(
   fs.readFileSync(`${__dirname}/dev-data/data/tours-simple.json`)
 );
 
-// Here are the URL Routers
+// 2. ROUTE HANDLERS
 const getAllTours = (req, res) => {
+  console.log(req.requestTime);
   res.status(200).json({
     status: 'success',
+    requestedAt: req.requestTime,
     results: tours.length,
     data: {
       tours: tours,
@@ -104,6 +114,7 @@ const deleteTour = (req, res) => {
 // app.patch('/api/v1/tours/:id', updateTour);
 // app.delete('/api/v1/tours/:id', deleteTour);
 
+// 3. ROUTES
 // The upper 5 lines can be transformed to the following:
 app.route('/api/v1/tours').get(getAllTours).post(createTour);
 app
@@ -113,6 +124,7 @@ app
   .delete(deleteTour);
 
 //-------------------------------------------------------
+// 4. START the SERVER
 //
 const port = 3000;
 app.listen(port, () => {
