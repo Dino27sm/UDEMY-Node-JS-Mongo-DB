@@ -5,6 +5,13 @@ const app = express();
 // MIDDLEWARE Definition - stays between Request and Response
 app.use(express.json());
 
+// // Create Own Middleware here -------------------------------
+// app.use((req, res, next) => {
+//   console.log('Hello from my Middleware! 👋');
+//   next(); // NEVER Forget to put this "next()" at the end !!!
+// });
+// //-----------------------------------------------------------
+
 const tours = JSON.parse(
   fs.readFileSync(`${__dirname}/dev-data/data/tours-simple.json`)
 );
@@ -90,7 +97,7 @@ const deleteTour = (req, res) => {
   });
 };
 
-//-------------------------------------------------------
+// //-------------------------------------------------------
 // app.get('/api/v1/tours', getAllTours);
 // app.get('/api/v1/tours/:id', getTour);
 // app.post('/api/v1/tours', createTour);
@@ -99,7 +106,11 @@ const deleteTour = (req, res) => {
 
 // The upper 5 lines can be transformed to the following:
 app.route('/api/v1/tours').get(getAllTours).post(createTour);
-app.route('/api/v1/tours:id').get(getTour).patch(updateTour).delete(deleteTour);
+app
+  .route('/api/v1/tours/:id')
+  .get(getTour)
+  .patch(updateTour)
+  .delete(deleteTour);
 
 //-------------------------------------------------------
 //
