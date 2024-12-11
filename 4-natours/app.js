@@ -24,7 +24,7 @@ const tours = JSON.parse(
   fs.readFileSync(`${__dirname}/dev-data/data/tours-simple.json`)
 );
 
-// 2. ROUTE HANDLERS
+// 2. ROUTE HANDLERS  =======================================
 const getAllTours = (req, res) => {
   console.log(req.requestTime);
   res.status(200).json({
@@ -107,6 +107,7 @@ const deleteTour = (req, res) => {
   });
 };
 //
+//-----------------------------------------------
 const getAllUsers = (req, res) => {
   res.status(500).json({
     status: 'error',
@@ -141,7 +142,7 @@ const deleteUser = (req, res) => {
     message: 'This route is not yet defined!',
   });
 };
-// //-------------------------------------------------------
+// //=========================================================
 // 3. ROUTES
 //
 app.route('/api/v1/tours').get(getAllTours).post(createTour);
