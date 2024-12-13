@@ -1,6 +1,9 @@
 const express = require('express');
 const morgan = require('morgan');
 
+const tourRouter = require('./routes/tourRoutes.js');
+const userRouter = require('./routes/userRoutes.js');
+
 const app = express();
 
 // 1. MIDDLEWARE Definition (stays between Request and Response)
@@ -20,10 +23,7 @@ app.use((req, res, next) => {
 //-----------------------------------------------------------
 //
 // 3. ROUTES
-//
-const tourRouter = require('./routes/tourRoutes.js');
-const userRouter = require('./routes/userRoutes.js');
-
+// Here Router are mounted
 app.use('/api/v1/tours', tourRouter);
 app.use('/api/v1/users', userRouter);
 
