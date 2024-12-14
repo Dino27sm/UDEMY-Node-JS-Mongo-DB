@@ -1,9 +1,14 @@
 const express = require('express');
+const tourControler = require('./../controllers/tourController.js');
 //
 //===========================================================
 //
 const router = express.Router();
-const tourControler = require('./../controllers/tourController.js');
+
+router.param('id', (req, res, next, val) => {
+  console.log(`Tour ID is: ${val}`);
+  next();
+});
 
 router.route('/').get(tourControler.getAllTours).post(tourControler.createTour);
 router
