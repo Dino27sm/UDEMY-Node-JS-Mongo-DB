@@ -5,10 +5,7 @@ const tourControler = require('./../controllers/tourController.js');
 //
 const router = express.Router();
 
-router.param('id', (req, res, next, val) => {
-  console.log(`Tour ID is: ${val}`);
-  next();
-});
+router.param('id', tourControler.checkID);
 
 router.route('/').get(tourControler.getAllTours).post(tourControler.createTour);
 router
