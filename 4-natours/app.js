@@ -10,6 +10,9 @@ const app = express();
 app.use(morgan('dev'));
 app.use(express.json());
 
+// A Way to get access to Static Files
+app.use(express.static(`${__dirname}/public/`));
+
 // Create Own Middleware here -------------------------------
 app.use((req, res, next) => {
   console.log('Hello from my Middleware! 👋');
