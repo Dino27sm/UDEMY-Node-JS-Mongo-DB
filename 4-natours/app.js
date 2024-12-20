@@ -7,7 +7,11 @@ const userRouter = require('./routes/userRoutes.js');
 const app = express();
 
 // 1. MIDDLEWARE Definition (stays between Request and Response)
-app.use(morgan('dev'));
+console.log(process.env.NODE_ENV);
+if (process.env.NODE_ENV === 'development') {
+  app.use(morgan('dev'));
+}
+
 app.use(express.json());
 
 // A Way to get access to Static Files
