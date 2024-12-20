@@ -1,6 +1,6 @@
 const app = require('./app');
 
-console.log(process.env);
+console.log(app.get('env')); // Gets the Environment variables
 
 const port = 3000;
 app.listen(port, () => {
