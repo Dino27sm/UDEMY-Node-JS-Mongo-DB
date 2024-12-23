@@ -7,7 +7,7 @@ const userRouter = require('./routes/userRoutes.js');
 const app = express();
 
 // 1. MIDDLEWARE Definition (stays between Request and Response)
-console.log(process.env.NODE_ENV);
+// console.log(process.env.NODE_ENV);
 if (process.env.NODE_ENV === 'development') {
   app.use(morgan('dev'));
 }
