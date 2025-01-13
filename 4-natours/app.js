@@ -6,39 +6,26 @@ const userRouter = require('./routes/userRoutes');
 
 const app = express();
 
-// 1. MIDDLEWARE Definition (stays between Request and Response)
-// console.log(process.env.NODE_ENV);
+// 1) MIDDLEWARES
 if (process.env.NODE_ENV === 'development') {
   app.use(morgan('dev'));
 }
 
 app.use(express.json());
-
-// A Way to get access to Static Files
-app.use(express.static(`${__dirname}/public/`));
-
-// Create Own Middleware here -------------------------------
-app.use((req, res, next) => {
-  console.log('Hello from my Middleware! 👋');
-  next(); // NEVER Forget to put this "next()" at the end !!!
-});
+app.use(express.static(`${__dirname}/public`));
 
 app.use((req, res, next) => {
-  req.requestTime = new Date().toUTCString();
+  console.log('Hello from the middleware 👋');
   next();
 });
-//-----------------------------------------------------------
-//
-// 3. ROUTES
-// Here Router are mounted
+
+app.use((req, res, next) => {
+  req.requestTime = new Date().toISOString();
+  next();
+});
+
+// 3) ROUTES
 app.use('/api/v1/tours', tourRouter);
 app.use('/api/v1/users', userRouter);
-
-//-------------------------------------------------------
-// START the SERVER
-// const port = 3000;
-// app.listen(port, () => {
-//   console.log(`App running on port ${port} ...`);
-// });
 
 module.exports = app;
