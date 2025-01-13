@@ -1,20 +1,19 @@
 const express = require('express');
-const tourControler = require('./../controllers/tourController.js');
-//
-//===========================================================
-//
+const tourController = require('./../controllers/tourController');
+
 const router = express.Router();
 
-router.param('id', tourControler.checkID);
+router.param('id', tourController.checkID);
 
 router
   .route('/')
-  .get(tourControler.getAllTours)
-  .post(tourControler.checkBody, tourControler.createTour);
+  .get(tourController.getAllTours)
+  .post(tourController.checkBody, tourController.createTour);
+
 router
   .route('/:id')
-  .get(tourControler.getTour)
-  .patch(tourControler.updateTour)
-  .delete(tourControler.deleteTour);
+  .get(tourController.getTour)
+  .patch(tourController.updateTour)
+  .delete(tourController.deleteTour);
 
 module.exports = router;
