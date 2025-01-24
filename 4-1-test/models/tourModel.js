@@ -1,4 +1,5 @@
 const mongoose = require('mongoose');
+const { trim } = require('validator');
 
 // mongoDB "Schema" and "model"
 const tourSchema = new mongoose.Schema({
@@ -6,8 +7,9 @@ const tourSchema = new mongoose.Schema({
     type: String,
     required: [true, 'A tour must have a name.'],
     unique: true,
+    trim: true,
   },
-  durations: {
+  duration: {
     type: Number,
     required: [true, 'A tour must have a duration.'],
   },
@@ -19,17 +21,22 @@ const tourSchema = new mongoose.Schema({
     type: String,
     required: [true, 'A tour must have a difficulty.'],
   },
-  rating: {
+  ratingsAverage: {
     type: Number,
     default: 4.5,
+  },
+  ratingsQuantity: {
+    type: Number,
+    default: 0,
   },
   price: {
     type: Number,
     required: [true, 'A tour must have a price.'],
   },
-  duration: {
-    type: Number,
-    default: 999,
+  priceDiscount: Number,
+  summary: {
+    type: String,
+    trim: true,
   },
 });
 
