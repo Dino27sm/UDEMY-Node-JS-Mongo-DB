@@ -4,18 +4,15 @@ exports.getAllTours = async (req, res) => {
   try {
     console.log(req.query);
 
-    // // FILTERING of Data - 1 way
-    // const tours = await Tour.find({
-    //   duration: 5,
-    //   difficulty: 'easy',
-    // });
+    // FILTERING of Data - 1 way
+    const tours = await Tour.find(req.query);
 
-    // FILTERING of Data - 2 way
-    const tours = await Tour.find()
-      .where('duration')
-      .equals('5')
-      .where('difficulty')
-      .equals('easy');
+    // // FILTERING of Data - 2 way
+    // const tours = await Tour.find()
+    //   .where('duration')
+    //   .equals('5')
+    //   .where('difficulty')
+    //   .equals('easy');
 
     res.status(200).json({
       status: 'success',
