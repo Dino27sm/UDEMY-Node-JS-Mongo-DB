@@ -2,10 +2,12 @@ const Tour = require('./../models/tourModel');
 
 exports.getAllTours = async (req, res) => {
   try {
-    console.log(req.query);
+    let queryObj = { ...req.query };
+    const excludedFields = ['page', 'sort', 'limit', 'fields'];
+    excludedFields.forEach((elm) => delete queryObj[elm]);
 
     // FILTERING of Data - 1 way
-    const tours = await Tour.find(req.query);
+    const tours = await Tour.find(queryObj);
 
     // // FILTERING of Data - 2 way
     // const tours = await Tour.find()
