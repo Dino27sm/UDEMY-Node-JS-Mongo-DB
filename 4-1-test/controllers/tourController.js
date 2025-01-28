@@ -12,14 +12,18 @@ exports.getAllTours = async (req, res) => {
 
     // 1.2 - ADVANCED FILTERING
     let queryStr = JSON.stringify(queryObj);
-    queryStr = queryStr.replace(/\b(gte|gt|lte|lt)\b/g, (match) => `$${match}`);
-    console.log(JSON.parse(queryStr));
+    // queryStr = queryStr.replace(/\b(gte|gt|lte|lt)\b/g, (match) => `$${match}`);
+    // console.log(JSON.parse(queryStr));
+    console.log(queryObj);
 
     let query = Tour.find(JSON.parse(queryStr));
 
     // 2. SORTING
     if (req.query.sort) {
+      // const sortBy = req.query.sort().split(',').jpin(' ');
       query = query.sort(req.query.sort);
+    } else {
+      query = query.sort('-createdAt');
     }
 
     // EXECUTE QUERY
