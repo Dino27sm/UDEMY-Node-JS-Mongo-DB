@@ -5,7 +5,7 @@ exports.getAllTours = async (req, res) => {
     // BUILD QUERY
     // 1.1 - FILTERING
     let queryObj = { ...req.query };
-    console.log(queryObj);
+    // console.log(queryObj);
 
     const excludedFields = ['page', 'sort', 'limit', 'fields'];
     excludedFields.forEach((elm) => delete queryObj[elm]);
@@ -18,8 +18,9 @@ exports.getAllTours = async (req, res) => {
     let query = Tour.find(JSON.parse(queryStr));
 
     // 2. SORTING
-    const sortStr = req.query.sort;
-    if (sortStr) {
+    let sortStr = req.query.sort;
+    // console.log(sortStr);
+    if (req.query.sort) {
       query = query.sort(sortStr);
     } else {
       query = query.sort('-createdAt');
