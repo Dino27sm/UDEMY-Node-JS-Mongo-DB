@@ -28,10 +28,11 @@ exports.getAllTours = async (req, res) => {
 
     // 3. FIELD LIMITING - to limit display data
     if (req.query.fields) {
-      console.log(req.query.fields);
       const fieldsStr = req.query.fields.replaceAll(',', ' ');
       console.log(fieldsStr);
       query = query.select(fieldsStr);
+    } else {
+      query = query.select('-__v');
     }
 
     // EXECUTE QUERY
