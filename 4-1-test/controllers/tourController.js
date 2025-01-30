@@ -18,10 +18,10 @@ exports.getAllTours = async (req, res) => {
     let query = Tour.find(JSON.parse(queryStr));
 
     // 2. SORTING
-    let sortStr = req.query.sort;
-    // console.log(sortStr);
     if (req.query.sort) {
-      query = query.sort(sortStr);
+      let sortBy = req.query.sort.replace(',', ' ');
+      console.log(sortBy);
+      query = query.sort(sortBy);
     } else {
       query = query.sort('-createdAt');
     }
