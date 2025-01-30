@@ -35,6 +35,19 @@ exports.getAllTours = async (req, res) => {
       query = query.select('-__v');
     }
 
+    // 4. PAGINATION - to display only needed page
+    if (req.query.page) {
+      const page = req.query.page * 1;
+      const limit = req.query.limit * 1;
+      const skip = (page - 1) * limit;
+      console.log(`page: ${page}`, typeof page);
+      console.log('-----------------------------');
+      console.log(`limit: ${limit}`);
+      console.log(`skip: ${skip}`);
+
+      query = query.skip(3).limit(3);
+    }
+
     // EXECUTE QUERY
     const tours = await query;
 
