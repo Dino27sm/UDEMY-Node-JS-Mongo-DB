@@ -36,7 +36,7 @@ exports.getAllTours = async (req, res) => {
     }
 
     // 4. PAGINATION - to display only needed page
-    if (req.query.page) {
+    if (req.query.page || req.query.limit) {
       const page = req.query.page * 1;
       const limit = req.query.limit * 1;
       const skip = (page - 1) * limit;
@@ -45,7 +45,7 @@ exports.getAllTours = async (req, res) => {
       console.log(`limit: ${limit}`);
       console.log(`skip: ${skip}`);
 
-      query = query.skip(3).limit(3);
+      query = query.skip(skip).limit(limit);
     }
 
     // EXECUTE QUERY
