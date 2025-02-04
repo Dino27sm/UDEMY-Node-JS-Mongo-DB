@@ -20,8 +20,47 @@ class APIFeatures {
 
     let queryStr = JSON.stringify(queryObj);
     queryStr = queryStr.replace(/\b(gte|gt|lte|lt)\b/g, (match) => `$${match}`);
+    this.query = this.query.find(JSON.parse(queryStr));
 
-    this.query.find(JSON.parse(queryStr));
+    return this;
+  }
+
+  sort() {
+    if (this.queryString.sort) {
+      let sortBy = this.queryString.sort.replaceAll(',', ' ');
+      console.log(sortBy);
+      this.query = this.query.sort(sortBy);
+    } else {
+      this.query = this.query.sort('-createdAt');
+    }
+
+    return this;
+  }
+
+  limitFields() {
+    if (this.queryString.fields) {
+      const fieldsStr = this.queryString.fields.replaceAll(',', ' ');
+      console.log(fieldsStr);
+      this.query = this.query.select(fieldsStr);
+    } else {
+      this.query = this.query.select('-__v');
+    }
+
+    return this;
+  }
+
+  paginate() {
+    const page = this.queryString.page * 1;
+    const limit = this.queryString.limit * 1;
+    const skip = (page - 1) * limit;
+    // console.log(`page: ${page}`, typeof page);
+    // console.log('-----------------------------');
+    // console.log(`limit: ${limit}`);
+    // console.log(`skip: ${skip}`);
+
+    this.query = this.query.skip(skip).limit(limit);
+
+    return this;
   }
 }
 
@@ -42,39 +81,43 @@ exports.getAllTours = async (req, res) => {
 
     // let query = Tour.find(JSON.parse(queryStr));
 
-    // 2. SORTING
-    if (req.query.sort) {
-      let sortBy = req.query.sort.replaceAll(',', ' ');
-      console.log(sortBy);
-      query = query.sort(sortBy);
-    } else {
-      query = query.sort('-createdAt');
-    }
+    // // 2. SORTING
+    // if (req.query.sort) {
+    //   let sortBy = req.query.sort.replaceAll(',', ' ');
+    //   console.log(sortBy);
+    //   query = query.sort(sortBy);
+    // } else {
+    //   query = query.sort('-createdAt');
+    // }
 
-    // 3. FIELD LIMITING - to limit display data
-    if (req.query.fields) {
-      const fieldsStr = req.query.fields.replaceAll(',', ' ');
-      console.log(fieldsStr);
-      query = query.select(fieldsStr);
-    } else {
-      query = query.select('-__v');
-    }
+    // // 3. FIELD LIMITING - to limit display data
+    // if (req.query.fields) {
+    //   const fieldsStr = req.query.fields.replaceAll(',', ' ');
+    //   console.log(fieldsStr);
+    //   query = query.select(fieldsStr);
+    // } else {
+    //   query = query.select('-__v');
+    // }
 
-    // 4. PAGINATION - to display only needed page
-    if (req.query.page || req.query.limit) {
-      const page = req.query.page * 1;
-      const limit = req.query.limit * 1;
-      const skip = (page - 1) * limit;
-      console.log(`page: ${page}`, typeof page);
-      console.log('-----------------------------');
-      console.log(`limit: ${limit}`);
-      console.log(`skip: ${skip}`);
+    // // 4. PAGINATION - to display only needed page
+    // if (req.query.page || req.query.limit) {
+    //   const page = req.query.page * 1;
+    //   const limit = req.query.limit * 1;
+    //   const skip = (page - 1) * limit;
+    //   console.log(`page: ${page}`, typeof page);
+    //   console.log('-----------------------------');
+    //   console.log(`limit: ${limit}`);
+    //   console.log(`skip: ${skip}`);
 
-      query = query.skip(skip).limit(limit);
-    }
+    //   query = query.skip(skip).limit(limit);
+    // }
 
     // EXECUTE QUERY
-    const features = new APIFeatures(Tour.find(), req.query).filter();
+    const features = new APIFeatures(Tour.find(), req.query)
+      .filter()
+      .sort()
+      .limitFields()
+      .paginate();
     const tours = await features.query;
 
     // SEND RESPONSE
