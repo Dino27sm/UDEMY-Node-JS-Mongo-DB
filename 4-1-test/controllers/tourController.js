@@ -53,10 +53,6 @@ class APIFeatures {
     const page = this.queryString.page * 1;
     const limit = this.queryString.limit * 1;
     const skip = (page - 1) * limit;
-    // console.log(`page: ${page}`, typeof page);
-    // console.log('-----------------------------');
-    // console.log(`limit: ${limit}`);
-    // console.log(`skip: ${skip}`);
 
     this.query = this.query.skip(skip).limit(limit);
 
@@ -66,52 +62,6 @@ class APIFeatures {
 
 exports.getAllTours = async (req, res) => {
   try {
-    // BUILD QUERY
-    // // 1.1 - FILTERING
-    // let queryObj = { ...req.query };
-    // // console.log(queryObj);
-
-    // const excludedFields = ['page', 'sort', 'limit', 'fields'];
-    // excludedFields.forEach((elm) => delete queryObj[elm]);
-
-    // // 1.2 - ADVANCED FILTERING
-    // let queryStr = JSON.stringify(queryObj);
-    // queryStr = queryStr.replace(/\b(gte|gt|lte|lt)\b/g, (match) => `$${match}`);
-    // console.log(JSON.parse(queryStr));
-
-    // let query = Tour.find(JSON.parse(queryStr));
-
-    // // 2. SORTING
-    // if (req.query.sort) {
-    //   let sortBy = req.query.sort.replaceAll(',', ' ');
-    //   console.log(sortBy);
-    //   query = query.sort(sortBy);
-    // } else {
-    //   query = query.sort('-createdAt');
-    // }
-
-    // // 3. FIELD LIMITING - to limit display data
-    // if (req.query.fields) {
-    //   const fieldsStr = req.query.fields.replaceAll(',', ' ');
-    //   console.log(fieldsStr);
-    //   query = query.select(fieldsStr);
-    // } else {
-    //   query = query.select('-__v');
-    // }
-
-    // // 4. PAGINATION - to display only needed page
-    // if (req.query.page || req.query.limit) {
-    //   const page = req.query.page * 1;
-    //   const limit = req.query.limit * 1;
-    //   const skip = (page - 1) * limit;
-    //   console.log(`page: ${page}`, typeof page);
-    //   console.log('-----------------------------');
-    //   console.log(`limit: ${limit}`);
-    //   console.log(`skip: ${skip}`);
-
-    //   query = query.skip(skip).limit(limit);
-    // }
-
     // EXECUTE QUERY
     const features = new APIFeatures(Tour.find(), req.query)
       .filter()
