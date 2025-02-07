@@ -176,6 +176,12 @@ exports.getMonthlyPlan = async (req, res) => {
       {
         $project: { _id: 0 },
       },
+      {
+        $sort: { numTourStarts: -1 },
+      },
+      {
+        $limit: 3, // Limit data to first 3 items (months)
+      },
     ]);
 
     res.status(200).json({
