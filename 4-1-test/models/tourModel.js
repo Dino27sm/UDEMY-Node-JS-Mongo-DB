@@ -79,10 +79,26 @@ tourSchema.pre('save', function (next) {
 });
 
 // QUERY MIDDLEWARE
-tourSchema.pre('find', function (next) {
+// tourSchema.pre('find', function (next) {
+//   this.find({ secretTour: { $ne: true } });
+//   next();
+// });
+
+tourSchema.pre(/^find/, function (next) {
+  this.find({ secretTour: { $ne: true } });
+
+  this.start = Date.now();
   next();
 });
 
+tourSchema.post(/^find/, function (docs, next) {
+  const queryTime = Date.now() - this.start;
+
+  console.log(docs);
+  console.log(`Query took ${queryTime} milsec to be created. 👌`);
+  next();
+});
+//-----------------------------------------------------
 const Tour = mongoose.model('Tour', tourSchema);
 
 module.exports = Tour;
