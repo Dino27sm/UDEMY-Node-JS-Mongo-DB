@@ -57,6 +57,10 @@ const tourSchema = new mongoose.Schema(
       select: false, // To NOT display "createdAt"
     },
     startDates: [Date],
+    secretTour: {
+      type: Boolean,
+      default: false,
+    },
   },
   {
     toJSON: { virtuals: true },
@@ -71,6 +75,11 @@ tourSchema.virtual('durationWeeks').get(function () {
 // DOCUMENT MIDDLEWARE: runs before ".save()" and ".create()"
 tourSchema.pre('save', function (next) {
   this.slug = slugify(this.name, { lower: true });
+  next();
+});
+
+// QUERY MIDDLEWARE
+tourSchema.pre('find', function (next) {
   next();
 });
 
