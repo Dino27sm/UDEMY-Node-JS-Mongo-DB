@@ -94,8 +94,14 @@ tourSchema.pre(/^find/, function (next) {
 tourSchema.post(/^find/, function (docs, next) {
   const queryTime = Date.now() - this.start;
 
-  console.log(docs);
+  // console.log(docs);
   console.log(`Query took ${queryTime} milsec to be created. 👌`);
+  next();
+});
+
+// AGGREGATION MIDDLEWARE
+tourSchema.pre('aggregate', function (next) {
+  console.log(this.pipeline());
   next();
 });
 //-----------------------------------------------------
