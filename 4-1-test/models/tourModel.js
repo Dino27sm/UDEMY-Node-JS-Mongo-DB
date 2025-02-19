@@ -46,7 +46,12 @@ const tourSchema = new mongoose.Schema(
       type: Number,
       required: [true, 'A tour must have a price.'],
     },
-    priceDiscount: Number,
+    priceDiscount: {
+      type: Number,
+      validate: function (discValue) {
+        return discValue < this.price;
+      },
+    },
     summary: {
       type: String,
       trim: true,
