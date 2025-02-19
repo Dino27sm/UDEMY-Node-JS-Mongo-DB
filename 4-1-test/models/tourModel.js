@@ -48,8 +48,11 @@ const tourSchema = new mongoose.Schema(
     },
     priceDiscount: {
       type: Number,
-      validate: function (discValue) {
-        return discValue < this.price;
+      validate: {
+        validator: function (discValue) {
+          return discValue < this.price;
+        },
+        message: `Discount ({VALUE}) cannot be greater than price !!!`,
       },
     },
     summary: {
