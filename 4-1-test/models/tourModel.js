@@ -50,6 +50,7 @@ const tourSchema = new mongoose.Schema(
       type: Number,
       validate: {
         validator: function (discValue) {
+          // "this" only points to the current document ON NEW Document created
           return discValue < this.price;
         },
         message: `Discount ({VALUE}) cannot be greater than price !!!`,
@@ -90,7 +91,7 @@ tourSchema.virtual('durationWeeks').get(function () {
   return this.duration / 7;
 });
 
-// DOCUMENT MIDDLEWARE: runs before ".save()" and ".create()"
+// DOCUMENT MIDDLEWARE: runs before ".save()" and ".create()" only
 tourSchema.pre('save', function (next) {
   this.slug = slugify(this.name, { lower: true });
   next();
