@@ -31,11 +31,16 @@ app.use('/api/v1/users', userRouter);
 //----------------------------------------------------------------------
 // The following appliss if incorrect URL has been sent !!!
 app.all('*', (req, res, next) => {
-  res.status(404).json({
-    status: 'fail',
-    message: `Cannot find ${req.originalUrl} in this server !!!`,
-  });
-  next();
+  // res.status(404).json({
+  //   status: 'fail',
+  //   message: `Cannot find ${req.originalUrl} in this server !!!`,
+  // });
+
+  const err = new Error(`Cannot find ${req.originalUrl} in this server !!!`);
+  err.status = 'fail';
+  err.statusCode = 404;
+
+  next(err);
 });
 
 app.use((err, req, res, next) => {
@@ -46,6 +51,8 @@ app.use((err, req, res, next) => {
     status: err.status,
     message: err.message,
   });
+
+  next();
 });
 //----------------------------------------------------------------------
 
