@@ -29,7 +29,7 @@ app.use('/api/v1/tours', tourRouter);
 app.use('/api/v1/users', userRouter);
 
 //----------------------------------------------------------------------
-// The following aplys if incorrect URL hag been sent !!!
+// The following appliss if incorrect URL has been sent !!!
 app.all('*', (req, res, next) => {
   res.status(404).json({
     status: 'fail',
