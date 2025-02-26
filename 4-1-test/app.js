@@ -1,6 +1,7 @@
 const express = require('express');
 const morgan = require('morgan');
 
+const AppError = require('./utils/appError');
 const tourRouter = require('./routes/tourRoutes');
 const userRouter = require('./routes/userRoutes');
 
@@ -31,16 +32,7 @@ app.use('/api/v1/users', userRouter);
 //----------------------------------------------------------------------
 // The following appliss if incorrect URL has been sent !!!
 app.all('*', (req, res, next) => {
-  // res.status(404).json({
-  //   status: 'fail',
-  //   message: `Cannot find ${req.originalUrl} in this server !!!`,
-  // });
-
-  const err = new Error(`Cannot find ${req.originalUrl} in this server !!!`);
-  err.status = 'fail';
-  err.statusCode = 404;
-
-  next(err);
+  next(new AppError(`Cannot find ${req.originalUrl} in this server !!!`, 404));
 });
 
 app.use((err, req, res, next) => {
