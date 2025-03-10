@@ -12,7 +12,10 @@ let db = process.env.DATABASE.replace(
   process.env.DATABASE_PASSWORD
 );
 
-mongoose.connect(db, {}).then(() => console.log('DB connection successful!'));
+mongoose
+  .connect(db, {})
+  .then(() => console.log('DB connection successful!'))
+  .catch((err) => console.log('ERROR !!!'));
 //------------------------------------------------------
 
 //
