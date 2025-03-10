@@ -12,14 +12,15 @@ let db = process.env.DATABASE.replace(
   process.env.DATABASE_PASSWORD
 );
 
-mongoose
-  .connect(db, {})
-  .then(() => console.log('DB connection successful!'))
-  .catch((err) => console.log('ERROR !!!'));
+mongoose.connect(db, {}).then(() => console.log('DB connection successful!'));
 //------------------------------------------------------
 
 //
 const port = 3000;
 app.listen(port, () => {
   console.log(`App running on port ${port}...`);
+});
+
+process.on('unhandledRejection', (err) => {
+  console.log(err.name, err.message);
 });
