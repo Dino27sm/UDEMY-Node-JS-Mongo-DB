@@ -23,8 +23,17 @@ const server = app.listen(port, () => {
 
 // To handle Errors of Rejections - wrong Password
 process.on('unhandledRejection', (err) => {
-  console.log(err.name, err.message);
   console.log(`Unhandled REJECTION ! 💥💥💥 Shutting down ... !`);
+  console.log(err.name, err.message);
+  server.close(() => {
+    process.exit(1);
+  });
+});
+
+// To handle Errors of UNCAUGHT EXCEPTION
+process.on('uncaughtException', (err) => {
+  console.log(`UCAUGHT EXCEPTION ! 💥💥💥 Shutting down ... !`);
+  console.log(err.name, err.message);
   server.close(() => {
     process.exit(1);
   });
