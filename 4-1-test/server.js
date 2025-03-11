@@ -5,7 +5,15 @@ dotenv.config({ path: './config.env' });
 const app = require('./app');
 const { type } = require('os');
 
-//------------------------------------------------------
+//-------------- Put this Error Checking at Start point ----------------
+// To handle Errors of UNCAUGHT EXCEPTION
+process.on('uncaughtException', (err) => {
+  console.log(`UNCAUGHT EXCEPTION ! 💥💥💥 Shutting down ... !`);
+  console.log(err.name, err.message);
+  process.exit(1);
+});
+
+//----------------------------------------------------------------------
 // const db = 'mongodb://localhost/natours-test';
 let db = process.env.DATABASE.replace(
   '<PASSWORD>',
@@ -24,15 +32,6 @@ const server = app.listen(port, () => {
 // To handle Errors of Rejections - wrong Password
 process.on('unhandledRejection', (err) => {
   console.log(`Unhandled REJECTION ! 💥💥💥 Shutting down ... !`);
-  console.log(err.name, err.message);
-  server.close(() => {
-    process.exit(1);
-  });
-});
-
-// To handle Errors of UNCAUGHT EXCEPTION
-process.on('uncaughtException', (err) => {
-  console.log(`UCAUGHT EXCEPTION ! 💥💥💥 Shutting down ... !`);
   console.log(err.name, err.message);
   server.close(() => {
     process.exit(1);
