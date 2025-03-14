@@ -1,6 +1,9 @@
 const mongoose = require('mongoose');
 const validator = require('validator');
 
+// First install "bcryptjs" in terminal mode: > npm i bcryptjs
+const bcrypt = require('bcryptjs');
+
 // Shema for - name, email, photo, password, passwordConfirm
 const userSchema = new mongoose.Schema({
   name: {
@@ -33,14 +36,28 @@ const userSchema = new mongoose.Schema({
     type: String,
     required: [true, 'You must Confirm the Password !'],
     validate: {
-      // This Works only on SAVE !!!
+      // This Works only on CREATE and SAVE !!!
       validator: function (elm) {
         return elm === this.password;
       },
+      message: 'Passwords are not the same !',
     },
   },
 });
 
+// To ENCRYPT Passwords in Database
+userSchema.pre('save', async function (next) {
+  // Run this function only if password is chaged
+  if (!this.isModified('password')) return next();
+
+  // Encrypting passwords by using "hash" method with cost of 12
+  this.password = await bcrypt.hash(this.password, 12);
+
+  // Delete "passwordConfirm" from Database
+  this.passwordConfirm = undefined;
+
+  next();
+});
 //==============================================================
 const User = mongoose.model('User', userSchema);
 
