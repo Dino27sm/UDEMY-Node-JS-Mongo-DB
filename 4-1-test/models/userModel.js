@@ -32,7 +32,12 @@ const userSchema = new mongoose.Schema({
   passwordConfirm: {
     type: String,
     required: [true, 'You must Confirm the Password !'],
-    minlength: 8,
+    validate: {
+      // This Works only on SAVE !!!
+      validator: function (elm) {
+        return elm === this.password;
+      },
+    },
   },
 });
 
