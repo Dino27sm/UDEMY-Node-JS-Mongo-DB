@@ -31,7 +31,9 @@ exports.login = (req, res, next) => {
   if (!email || !password) {
     return next(new AppError('Please, provide email and password !', 400));
   }
+
   // 2. Check if User exists and the "password" is correct
+  const user = User.findOne({ email });
 
   // 3. If everything is OK, send "jwt" token to the client
   const token = '';
