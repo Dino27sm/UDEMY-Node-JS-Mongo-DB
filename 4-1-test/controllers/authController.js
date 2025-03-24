@@ -51,6 +51,28 @@ exports.login = catchAsync(async (req, res, next) => {
   });
 });
 
-exports.protect = catchAsync((req, res, next) => {
+exports.protect = catchAsync(async (req, res, next) => {
+  // 1. Check if "token" created and exists
+  let token;
+  if (
+    req.headers.authorization &&
+    req.headers.authorization.startsWith('Bearer')
+  ) {
+    token = req.headers.authorization.split(' ')[1];
+  }
+
+  console.log(token);
+
+  if (!token) {
+    return next(
+      new AppError('You are NOT logged in ! Please, try again !', 401)
+    );
+  }
+  // 2. Verify validity of "token"
+
+  // 3. Check if the User still exists
+
+  // 4. Check if the User changed the password after the last "token" created
+
   next();
 });
