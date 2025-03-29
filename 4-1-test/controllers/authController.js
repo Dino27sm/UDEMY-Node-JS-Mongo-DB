@@ -17,6 +17,7 @@ exports.signup = catchAsync(async (req, res, next) => {
     password: req.body.password,
     passwordConfirm: req.body.passwordConfirm,
     passwordChangedAt: req.body.passwordChangedAt,
+    role: req.body.role,
   });
 
   const token = signToken(newUser._id);
@@ -89,3 +90,16 @@ exports.protect = catchAsync(async (req, res, next) => {
   req.user = currentUser; // "req.user" passes "user" to the next middleware
   next();
 });
+
+// Chicking for rights of "user" given by "role"
+// Middleware functions cannot receive other than "req, res, next"
+// Use this way to pass other parameters !!!
+exports.restrictTo = (...roles) => {
+  return (req, res, next) => {
+    // roles ["admin", "lead-guide"] >> IF role = "user" >> Error generated
+    if (!roles.includes(req.user.role)) {
+      return next(new AppError('You are NOT allowed for this !', 403));
+    }
+    next();
+  };
+};
