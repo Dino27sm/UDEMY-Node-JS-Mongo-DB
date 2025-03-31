@@ -53,6 +53,8 @@ const userSchema = new mongoose.Schema({
   },
 
   passwordChangedAt: Date,
+  passwordResetToken: String, // Temporary password
+  passwordResetExpires: Date,
 });
 
 // To ENCRYPT Passwords in Database
@@ -92,8 +94,14 @@ userSchema.methods.changedPasswordAfter = function (JWTTimestamp) {
   return false;
 };
 
+// Creating a "temporary password"
 userSchema.methods.createPasswordResetToken = function () {
   const resetToken = crypto.randomBytes(32).toString('hex');
+
+  this.passwordResetToken = crypto
+    .createHash(sha256)
+    .update(resetToken)
+    .digest('hex');
 };
 
 //==============================================================
