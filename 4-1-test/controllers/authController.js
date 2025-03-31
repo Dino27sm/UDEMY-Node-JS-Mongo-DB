@@ -91,7 +91,7 @@ exports.protect = catchAsync(async (req, res, next) => {
   next();
 });
 
-// Chicking for rights of "user" given by "role"
+// Checking for rights of "user" given by "role"
 // Middleware functions cannot receive other than "req, res, next"
 // Use this way to pass other parameters !!!
 exports.restrictTo = (...roles) => {
@@ -103,3 +103,17 @@ exports.restrictTo = (...roles) => {
     next();
   };
 };
+
+exports.forgotPassword = catchAsync(async (req, res, next) => {
+  // 1. Get the "user" based on POSTed "email"
+  const user = await User.findOne({ email: req.body.email });
+  if (!user) {
+    return next(new AppError('NO User with that Email address !', 404));
+  }
+
+  // 2. Create the random reset token
+
+  // 3. -----
+});
+
+exports.resetPassword = (req, res, next) => {};
