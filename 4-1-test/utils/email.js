@@ -20,7 +20,7 @@ const sendEmail = (options) => {
   };
 
   // 3. Send the mail
-  transporter.sendMail(options);
+  transporter.sendMail(mailOptions);
 };
 
 module.exports = sendEmail;
