@@ -33,6 +33,7 @@ const sendErrorDev = (err, res) => {
 
 const sendErrorProd = (err, res) => {
   // Operational Errors => Send Error Messages to Clients
+  console.log(`The error is: ${err}`);
   if (err.isOperational) {
     res.status(err.statusCode).json({
       status: err.status,
@@ -53,7 +54,6 @@ module.exports = (err, req, res, next) => {
   err.status = err.status || 'ERROR !';
 
   let errDuplct = JSON.parse(JSON.stringify(err));
-
   if (errDuplct.name === 'CastError') {
     errDuplct = handleCastErrorDB(errDuplct);
   }
@@ -70,7 +70,7 @@ module.exports = (err, req, res, next) => {
     errDuplct = handleJWTExpiredError();
   }
 
-  sendErrorProd(errDuplct, res);
+  sendErrorProd(err, res); // The previous was: err=errDuplct
   next();
 };
 //
