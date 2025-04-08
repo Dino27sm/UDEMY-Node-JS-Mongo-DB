@@ -1,4 +1,6 @@
-const crypto = require('crypto');
+const crypto = require('crypto-js');
+const AES = require('crypto-js/aes');
+const passwordGenerator = require('generate-password');
 const mongoose = require('mongoose');
 const validator = require('validator');
 
@@ -9,7 +11,6 @@ const bcrypt = require('bcryptjs');
 const userSchema = new mongoose.Schema({
   name: {
     type: String,
-
     // These are VALIDATORS
     required: [true, 'Please, write down your name !'],
     maxlength: [40, 'Name must not exceed 40 symbols !!!'],
@@ -96,12 +97,30 @@ userSchema.methods.changedPasswordAfter = function (JWTTimestamp) {
 
 // Creating a "temporary password"
 userSchema.methods.createPasswordResetToken = function () {
-  const resetToken = crypto.randomBytes(32).toString('hex');
+  // Random Password srting creating
+  const newRandomPassword = passwordGenerator.generate({
+    length: 12,
+    numbers: true,
+  });
 
-  this.passwordResetToken = crypto
-    .createHash(sha256)
-    .update(resetToken)
-    .digest('hex');
+  // Encripting generated random password
+  const resetToken = crypto.AES.encrypt(
+    newRandomPassword,
+    'secret key 123'
+  ).toString();
+
+  this.passwordResetToken = resetToken;
+
+  console.log({ resetToken }, this.passwordResetToken);
+
+  // // Decripting generated password ================================
+  // const decrypedPassword = crypto.AES.decrypt(
+  //   this.passwordResetToken,
+  //   'secret key 123'
+  // );
+  // const originalText = decrypedPassword.toString(crypto.enc.Utf8);
+  // console.log(originalText);
+  // //================================================================
 
   this.passwordResetExpires = Date.now() + 10 * 60 * 1000;
 
