@@ -111,9 +111,10 @@ userSchema.methods.createPasswordResetToken = function () {
 
   this.passwordResetToken = resetToken;
 
-  console.log({ resetToken }, this.passwordResetToken);
+  console.log(`=== Random generated password: ${newRandomPassword}`);
+  console.log(`=== Encrypted password: `, { resetToken });
 
-  // // Decripting generated password ================================
+  // // Decrypting of generated password ==============================
   // const decrypedPassword = crypto.AES.decrypt(
   //   this.passwordResetToken,
   //   'secret key 123'
