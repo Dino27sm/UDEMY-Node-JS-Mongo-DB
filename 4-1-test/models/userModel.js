@@ -72,6 +72,16 @@ userSchema.pre('save', async function (next) {
   next();
 });
 
+userSchema.pre('save', function (next) {
+  if (!this.isModified('password') || this.isNew) {
+    return next();
+  }
+
+  this.passwordChangedAt = Date.now() - 1000;
+
+  next();
+});
+
 // To Check if "login password" and "user password" are the same?
 userSchema.methods.correctPassword = async function (
   candidatePassword,
@@ -109,7 +119,7 @@ userSchema.methods.createPasswordResetToken = function () {
     'secret key 123'
   ).toString();
 
-  this.passwordResetToken = resetToken;
+  // this.passwordResetToken = resetToken;
 
   console.log(`=== Random generated password: ${newRandomPassword}`);
   console.log(`=== Encrypted password: `, { resetToken });
